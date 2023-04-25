@@ -143,6 +143,9 @@ class Transformers:
                         emission_factor=transformer[
                             "variable output constraint costs"],
                         investment=invest,
+                        nonconvex=solph.NonConvex(
+                            startup_costs=tf["startup costs"],
+                        ) if "startup costs" in tf and not pd.isna(tf["startup costs"]) else None,
                 )
             }
         }
