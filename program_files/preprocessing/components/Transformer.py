@@ -3,7 +3,7 @@
     Janik Budde - Janik.Budde@fh-muenster.de
     Yannick Wittor - yw090223@fh-muenster.de
 """
-from oemof.solph import Flow, Investment, Transformer, Source, Bus
+from oemof.solph import Flow, Investment, Transformer, Source, Bus, NonConvex
 from oemof.solph.components import GenericCHP
 import logging
 import numpy
@@ -143,9 +143,16 @@ class Transformers:
                         emission_factor=transformer[
                             "variable output constraint costs"],
                         investment=invest,
+                        #own code
                         nonconvex=solph.NonConvex(
-                            startup_costs=tf["startup costs"],
-                        ) if "startup costs" in tf and not pd.isna(tf["startup costs"]) else None,
+                            startup_costs=transformer["startup costs"],
+                        ) if "startup costs" in transformer and not pandas.isna(transformer["startup costs"]) else None,
+
+                        #trying another nonconvex flow object
+                        # nonconvex=solph.NonConvex(
+                        #     minimum_downtime=transformer["minimum downtime"],
+                        #     initial_status=transformer["initial status"],
+                        # ) if "minimum downtime" in transformer and not pandas.isna(transformer["minimum downtime"]) else None,
                 )
             }
         }
